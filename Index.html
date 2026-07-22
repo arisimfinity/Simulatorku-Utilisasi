@@ -1,0 +1,218 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulatorku - App</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Google Fonts: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+    }
+    .input-field:focus {
+      outline: none;
+      border-color: #facc15;
+      box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.3);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4 sm:p-6">
+
+  <!-- Container Utama -->
+  <div class="w-full max-w-lg bg-white rounded-2xl shadow-2xl overflow-hidden border-t-4 border-yellow-400 relative">
+    
+    <!-- Header Area -->
+    <div class="bg-blue-900 pt-8 pb-9 px-6 text-center relative overflow-hidden">
+      
+      <!-- Ornaments Background -->
+      <div class="absolute -top-10 -left-10 w-40 h-40 bg-blue-800 rounded-full mix-blend-screen opacity-50 pointer-events-none"></div>
+      <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-blue-700 rounded-full mix-blend-screen opacity-50 pointer-events-none"></div>
+
+      <!-- Header Content -->
+      <div class="relative z-10 flex flex-col items-center">
+        
+        <!-- Logo Gambar Tepat di Tengah Atas Judul -->
+        <img src="https://lh3.googleusercontent.com/d/1Sy65FphBu7ntwYQwZP2sqfoj3xyQ-Esx" 
+             alt="Logo Garuda Simulator" 
+             class="h-28 sm:h-36 w-auto object-contain drop-shadow-xl mb-3 transition-transform hover:scale-105 duration-300">
+        
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight uppercase">Simulatorku</h1>
+        <p class="text-yellow-400 font-medium text-xs sm:text-sm mt-1 tracking-wide">LOG UTILISASI SIMULATOR</p>
+      </div>
+    </div>
+
+    <!-- Form Area -->
+    <form id="simForm" onsubmit="submitForm(event)" class="p-6 sm:p-8 space-y-4 -mt-4 bg-white rounded-t-3xl relative z-20">
+      
+      <!-- Tanggal -->
+      <div>
+        <label class="block text-sm font-bold text-blue-900 mb-1">Tanggal</label>
+        <input type="date" id="tanggal" required class="input-field w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 transition-all cursor-pointer">
+      </div>
+
+      <!-- User Dropdown & Manual Input -->
+      <div class="grid grid-cols-1 gap-4">
+        <div>
+          <label class="block text-sm font-bold text-blue-900 mb-1">User</label>
+          <select id="userType" onchange="toggleUserManual()" required class="input-field w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 transition-all cursor-pointer appearance-none">
+            <option value="" disabled selected>Pilih User...</option>
+            <option value="GA">GA</option>
+            <option value="CTV">CTV</option>
+            <option value="Non GA">Non GA</option>
+          </select>
+        </div>
+        <!-- Input Manual (Disembunyikan kecuali jika Non GA dipilih) -->
+        <div id="userManualDiv" class="hidden">
+          <label class="block text-sm font-bold text-blue-900 mb-1">Nama User (Non GA)</label>
+          <input type="text" id="userManual" placeholder="Ketik nama user..." class="input-field w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 transition-all">
+        </div>
+      </div>
+
+      <!-- Jenis Simulator & Exercise -->
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-bold text-blue-900 mb-1">Armada</label>
+          <select id="simulatorType" required class="input-field w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 transition-all cursor-pointer appearance-none">
+            <option value="" disabled selected>Pilih...</option>
+            <option value="A320">A320</option>
+            <option value="A330">A330</option>
+            <option value="B737NG#1">B737NG#1</option>
+            <option value="B737NG#2">B737NG#2</option>
+            <option value="ATR">ATR</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-bold text-blue-900 mb-1">Exercise</label>
+          <select id="exercise" required class="input-field w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 transition-all cursor-pointer appearance-none">
+            <option value="" disabled selected>Pilih...</option>
+            <option value="S">S</option>
+            <option value="C">C</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Session Dropdown -->
+      <div>
+        <label class="block text-sm font-bold text-blue-900 mb-1">Session</label>
+        <select id="session" required class="input-field w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 transition-all cursor-pointer appearance-none">
+          <option value="" disabled selected>Pilih Session...</option>
+          <option value="Session 1">Session 1</option>
+          <option value="Session 2">Session 2</option>
+          <option value="Session 3">Session 3</option>
+          <option value="Session 4">Session 4</option>
+          <option value="Session 5">Session 5</option>
+        </select>
+      </div>
+
+      <!-- Input Waktu -->
+      <div class="grid grid-cols-2 gap-4 border-t border-slate-100 pt-4 mt-2">
+        <div>
+          <label class="block text-sm font-bold text-blue-900 mb-1">Total Time <span class="text-xs font-normal text-slate-500">(Jam)</span></label>
+          <input type="number" step="0.1" id="totalTime" placeholder="0.0" required class="input-field w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 transition-all font-semibold text-lg">
+        </div>
+        <div>
+          <label class="block text-sm font-bold text-blue-900 mb-1">Time Lost <span class="text-xs font-normal text-slate-500">(Jam)</span></label>
+          <input type="number" step="0.1" id="totalTimeLost" placeholder="0.0" required class="input-field w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-800 transition-all font-semibold text-lg">
+        </div>
+      </div>
+
+      <!-- Tombol Submit -->
+      <button type="submit" id="submitBtn" class="w-full mt-6 bg-yellow-400 hover:bg-yellow-500 text-blue-900 font-extrabold text-lg py-4 rounded-xl shadow-[0_4px_14px_0_rgba(250,204,21,0.39)] hover:shadow-[0_6px_20px_rgba(250,204,21,0.23)] hover:-translate-y-0.5 transition-all duration-200 flex justify-center items-center gap-2">
+        <span>SIMPAN DATA</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </button>
+
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('tanggal').valueAsDate = new Date();
+
+    function toggleUserManual() {
+      const userType = document.getElementById('userType').value;
+      const manualDiv = document.getElementById('userManualDiv');
+      const manualInput = document.getElementById('userManual');
+      
+      if (userType === 'Non GA') {
+        manualDiv.classList.remove('hidden');
+        manualInput.required = true;
+      } else {
+        manualDiv.classList.add('hidden');
+        manualInput.required = false;
+        manualInput.value = '';
+      }
+    }
+
+    function submitForm(event) {
+      event.preventDefault();
+      
+      const btn = document.getElementById('submitBtn');
+      const originalBtnText = btn.innerHTML;
+      
+      btn.disabled = true;
+      btn.classList.add('opacity-80', 'cursor-not-allowed');
+      btn.innerHTML = `<span>MENYIMPAN...</span>`;
+
+      const formData = {
+        tanggal: document.getElementById('tanggal').value,
+        userType: document.getElementById('userType').value,
+        userManual: document.getElementById('userManual').value,
+        simulatorType: document.getElementById('simulatorType').value,
+        exercise: document.getElementById('exercise').value,
+        session: document.getElementById('session').value,
+        totalTime: document.getElementById('totalTime').value,
+        totalTimeLost: document.getElementById('totalTimeLost').value
+      };
+
+      google.script.run
+        .withSuccessHandler(function(response) {
+          btn.disabled = false;
+          btn.classList.remove('opacity-80', 'cursor-not-allowed');
+          btn.innerHTML = originalBtnText;
+
+          if(response.success) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Tersimpan!',
+              text: 'Data utilisasi berhasil masuk ke database.',
+              confirmButtonColor: '#1e3a8a',
+              confirmButtonText: 'Tutup',
+              iconColor: '#facc15'
+            });
+            document.getElementById('simForm').reset();
+            document.getElementById('tanggal').valueAsDate = new Date();
+            toggleUserManual();
+          } else {
+            showError(response.message);
+          }
+        })
+        .withFailureHandler(function(error) {
+          btn.disabled = false;
+          btn.classList.remove('opacity-80', 'cursor-not-allowed');
+          btn.innerHTML = originalBtnText;
+          showError(error.message);
+        })
+        .saveData(formData);
+    }
+
+    function showError(msg) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Gagal',
+        text: msg,
+        confirmButtonColor: '#ef4444'
+      });
+    }
+  </script>
+</body>
+</html>
